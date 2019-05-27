@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Locator Tester</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+</head>
+<body>
+
+
+	<div class="container-contact100">
+		<div class="wrap-contact100">
+			<form class="contact100-form validate-form" action="#">
+				<span class="contact100-form-title">
+					<h1>Locator Adviser</h1>
+				</span>
+
+				<h3 class="mb-2 text-center" style="font-size: 16px; margin-bottom: 1rem">
+					Writing automated browser tests with Selenium? <br>Let's see how good are your locators!
+			
+				</h3>
+
+				<div class="wrap-input100 validate-input">
+					<input class="input100" type="text" name="locator" placeholder="Enter your XPath or CSS locator">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="container-contact100-form-btn">
+					<div class="wrap-contact100-form-btn">
+						<div class="contact100-form-bgbtn"></div>
+						<button class="contact100-form-btn" type="submit">
+							<span>
+								Calculate Score
+								<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+							</span>
+						</button>
+					</div>
+				</div>
+			</form>
+			<div id="notice" class="alert mt-2">
+				This site helps test automation engineers to <b>improve their locators</b>. 
+				Finding element on a page is not a big deal. However, finding the most effective and stable element path is hard.
+				We analyze your locators by various meterics and recommend how to improve them.
+
+				<br><br>
+				Please note: we <b>do not run your locators</b>. We test only the locator string itself. If it's compact, uses ID or data attributes, this is probably a good locator. If it's a long long XPath - it's 100% a bad one.
+			</div>
+			<div id="results">
+			<div id="chart"></div>
+
+			</div>
+		</div>
+	</div>
+
+
+<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<!--===============================================================================================-->
+	<script src="js/axis.js"></script>
+
+	<script>
+
+
+		
+(function ($) {
+    "use strict";
+
+    var options = {
+        chart: {
+            height: 350,
+            type: 'radialBar',
+        },
+        plotOptions: {
+            radialBar: {
+                offsetY: -10,
+                startAngle: 0,
+                endAngle: 270,
+                hollow: {
+                    margin: 5,
+                    size: '30%',
+                    background: 'transparent',
+                    image: undefined,
+                },
+                dataLabels: {
+                    name: {
+                        show: false,
+                        
+                    },
+                    value: {
+                        show: false,
+                    }
+                }
+            }
+        },
+        theme: {
+				  palette: 'palette3' // upto palette10
+				},
+				series: Object.keys(window.axis).map(a => 0),
+				labels: Object.keys(window.axis).map(a => a.toUpperCase()),
+        legend: {
+            show: true,
+            floating: true,
+            fontSize: '16px',
+            position: 'left',
+            offsetY: 10,
+            labels: {
+                useSeriesColors: true,
+            },
+            markers: {
+                size: 0
+            },
+            formatter: function(seriesName, opts) {
+                return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex]
+            },
+            itemMargin: {
+                horizontal: 1,
+            }
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                legend: {
+                    show: false
+                }
+            }
+        }]
+    }
+
+   var chart = new ApexCharts(
+        document.getElementById("chart"),
+        options
+    );
+
+    $('#results').show();    
+    Object.keys(window.axis).forEach((a) => $('#results').append(`<div id="axis-${a}"></div>`));
+
+    chart.render();
+
+	$('.validate-form').on('submit',function(e) {
+
+    var locator = $('input[name="locator"]').val();
+
+    try {
+	  	if (detectLocator(locator) === 'CSS') {
+	  		document.querySelectorAll(locator);		
+	  	}
+ 	  	if (detectLocator(locator) === 'XPath') {
+	  		document.evaluate(locator, 'body', null, 5, null);		
+	  	}
+    } catch (err) {
+    	$('#notice').addClass('alert-danger').text('This is invalid CSS or XPath').show();
+    	return false;;
+    }
+
+    $('#notice').hide();
+
+    if (!locator.length) return false;
+
+    var axis = window.axis;
+    let scores = [];
+
+    function detectClass(score) {
+    	if (score > 70) return 'alert alert-success';
+    	if (score > 30) return 'alert alert-warning';
+    	return 'alert alert-danger';
+    }
+
+    Object.keys(axis).forEach((key) => {
+    	let a = axis[key];
+    	let score = a.score(locator);
+    	scores.push(score);
+    	$(`#axis-${key}`).html(`<h5><strong>${key.toUpperCase()}</strong>: ${score}%</h5>` + a.analyze(score)).attr('class', detectClass(score));
+    });
+
+    chart.updateSeries(scores);
+
+    return false;
+	});
+})(jQuery);
+	</script>
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-23581568-13');
+</script>
+
+</body>
+</html>
