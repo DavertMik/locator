@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Locator Tester</title>
+	<title>Locator Advicer - improve CSS / XPath locators - test CSS / XPath selectors</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->
@@ -56,19 +56,40 @@
 				</div>
 			</form>
 			<div id="notice" class="alert mt-2">
-				This site helps test automation engineers to <b>improve their locators</b>. 
+				This site helps test automation engineers to <b>test and improve locators</b>. 
 				Finding element on a page is not a big deal. However, finding the most effective and stable element path is hard.
 				We analyze your locators by various meterics and recommend how to improve them.
 
 				<br><br>
-				Please note: we <b>do not run your locators</b>. We test only the locator string itself. If it's compact, uses ID or data attributes, this is probably a good locator. If it's a long long XPath - it's 100% a bad one.
+				Please note: we do not execute your locators. We test only the locator string itself. If it's compact, uses ID or data attributes, this is probably a good locator. If it's a long long XPath - it's 100% a bad one.
+
+				<br><br><hr>
+
+				<p class="text-center">
+
+				🚀 <a href="https://codecept.io">Write tremendous tests with CodeceptJS testing framework</a>! 🚀 .<br> It's 100% focused on readability and effectiveness of your tests.
+
+			</p>
+
 			</div>
-			<div id="results">
-			<div id="chart"></div>
+			<div id="results" >
+			<div id="chart" style="position: absolute; top: -5000px" ></div>
 
 			</div>
 		</div>
 	</div>
+
+			<footer class="page-footer font-small blue pt-4" style="background: #333; color: #fff">
+
+
+			  <!-- Footer Links -->
+			  <div class="container	text-center">
+			  	Locator Adviser is GPL open source. Check our	 <a href="https://github.com/DavertMik/locator">GitHub</a> to contribute.<br>
+			  	Created by <a href="https://twitter.com/davert">Michael Bodnarchuk</a>
+
+
+	</div>
+			</footer>
 
 
 <!--===============================================================================================-->
@@ -162,7 +183,10 @@
 
 	$('.validate-form').on('submit',function(e) {
 
+		$('#chart').css({position: 'relative', top: 0 });
+
     var locator = $('input[name="locator"]').val();
+    if (!locator.length) return false;
 
     try {
 	  	if (detectLocator(locator) === 'CSS') {
@@ -180,7 +204,6 @@
 		$('#result').show();
     $('#notice').hide();
 
-    if (!locator.length) return false;
 
     var axis = window.axis;
     let scores = [];
