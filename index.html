@@ -183,10 +183,10 @@
 
 	$('.validate-form').on('submit',function(e) {
 
-		$('#chart').css({position: 'relative', top: 0 });
 
     var locator = $('input[name="locator"]').val();
     if (!locator.length) return false;
+		$('#chart').css({position: 'relative', top: 0 });
 
     try {
 	  	if (detectLocator(locator) === 'CSS') {
