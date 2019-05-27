@@ -1,20 +1,23 @@
 # Locator Adviser 
 
+🤖👾🗜 
 
-🤖👾🗜 This service helper QAs and test automation engineers to write better locator for their tests.
-If locator is complicated it would be fragile and hard to maintain. 🤖👾🗜
+This service helper QAs and test automation engineers to write better locator for their tests.
+If locator is complicated it would be fragile and hard to maintain. 
+
+🤖👾🗜
 
 Are you locators good? 🤔 [Let's find out](https://davertmik.github.io/locator/)
 
 ---
 
-![https://davertmik.github.io/locator/](https://user-images.githubusercontent.com/220264/58432735-8da33080-80bc-11e9-8a31-97e40fd04db3.png)
+[![](https://user-images.githubusercontent.com/220264/58432735-8da33080-80bc-11e9-8a31-97e40fd04db3.png)](https://davertmik.github.io/locator/)
 
 ## Who created this?
 
 This project is create by Michael Bodnarchuk [@davert](https://twitter.com/davert). 
 
-If you really want to write better tests, [try CodeceptJS](https://codecept.io) a test automation framework which resolves painfully bad locators. 🚀
+If you really want to write better tests, [try CodeceptJS](https://codecept.io) a test automation framework which resolves painfully bad locators. 🚀🚀🚀
 
 ## Contributing
 
