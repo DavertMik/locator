@@ -169,13 +169,15 @@
 	  		document.querySelectorAll(locator);		
 	  	}
  	  	if (detectLocator(locator) === 'XPath') {
-	  		document.evaluate(locator, 'body', null, 5, null);		
+	  		document.evaluate(locator, document);		
 	  	}
     } catch (err) {
-    	$('#notice').addClass('alert-danger').text('This is invalid CSS or XPath').show();
+    	$('#notice').addClass('alert-danger').html('This is invalid CSS or XPath. <br><br>' + err.message).show();
+    	$('#result').hide();
     	return false;;
     }
 
+		$('#result').show();
     $('#notice').hide();
 
     if (!locator.length) return false;
