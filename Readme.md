@@ -1,12 +1,14 @@
 # Locator Adviser 
 
-![https://davertmik.github.io/locator/](https://user-images.githubusercontent.com/220264/58432583-c1318b00-80bb-11e9-92ec-9f491400e907.png)
-
 
 🤖👾🗜 This service helper QAs and test automation engineers to write better locator for their tests.
 If locator is complicated it would be fragile and hard to maintain. 🤖👾🗜
 
 Are you locators good? 🤔 [Let's find out](https://davertmik.github.io/locator/)
+
+---
+
+![https://davertmik.github.io/locator/](https://user-images.githubusercontent.com/220264/58432735-8da33080-80bc-11e9-8a31-97e40fd04db3.png)
 
 ## Who created this?
 
