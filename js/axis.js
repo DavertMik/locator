@@ -143,7 +143,7 @@ axis.stability = {
       tip += '<br></br> It seems you relying on exact order of elements. It\'s not recommended to do so, element\'s position in HTML may change, it can be moved away from it\'s current parent.';
     }
     if (detectLocator(locator) === 'XPath' && locator.indexOf('@class=') > 0) {
-      tip += '<br></br> Ouch, use are using <code>@class=</code> statement, which will work only if you have exact set of classes and exact order in elements. If you ever add another class to an element this locator will fail. Please use "contains" function instead: <code>[contains(@class, "class-name")]</code>';
+      tip += '<br></br> Ouch, you are using <code>@class=</code> statement, which will work only if you have exact set of classes and exact order in elements. If you ever add another class to an element this locator will fail. Please use "contains" function instead: <code>[contains(@class, "class-name")]</code>';
     }
 
     tip += '<br></br> Please also make sure you are not relying on auto-generated classes (from React/Angular/Ember) or Bootstrap classes which are used for styling (text-left, col, etc)';
