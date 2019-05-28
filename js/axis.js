@@ -77,32 +77,51 @@ axis.stability = {
 
   score: (locator) => {
     let score = 100;
+    const bootstrap = [
+      'col-', 'left', 'right', 'text-center', 'text-right', 'text-left', 'pull-left', 'pull-right', 'text-muted', 'pull-', 'push-', 'clearfix'
+    ];
+    const others = ['ember-', 'jss', '_'];
 
     if (detectLocator(locator) === 'CSS') {
 
-      const keywords = ['.ember-', '.jss', '._'];
+      for (let keyword of bootstrap) {
+        let matches = locator.match(new RegExp(`\.${keyword}\\W?`, 'g'));
+        if (matches) score = score - matches.length * 20;
+      }
 
-      for (let keyword of keywords) {
-        let length = locator.split(keyword).length;
-        score = score - (locator.split(keyword).length - 1) * 40;
+      for (let keyword of others) {
+        let matches = locator.match(new RegExp(`\.${keyword}\\W?`, 'g'));
+        if (matches) score = score - matches.length * 40;
       }
 
       score = score - (locator.split('>').length - 1) * 20; // chaining detected
 
+      let numClasses = locator.split('.').length - 1;
+      if (numClasses > 3) score -= numClasses * 7; // too many classes
+
     }
 
     if (detectLocator(locator) === 'XPath') {
-      locator = locator.replace("'", '"')
+      locator = locator.replace("'", '"');
       const keywords = [
         '@class="', // no direct classes
         '@class = "', // no direct classes
-        'contains(@class, "ember-', // no fw classes
-        'contains(@class, "jss']; // no jss classes
+      ];
 
       for (let keyword of keywords) {
         let length = locator.split(keyword).length;
         score = score - (locator.split(keyword).length - 1) * 40;
       }
+
+      for (let keyword of bootstrap) {
+        let matches = locator.indexOf(/@class\\s?,\\s?"${keyword}/g);
+        if (matches) score = score - matches.length * 20;
+      }
+
+      for (let keyword of others) {
+        let matches = locator.match(/@class\\s?,\\s?"${keyword}/g);
+        if (matches) score = score - matches.length * 40
+      }      
 
       score = score - Math.pow(locator.split(']/').length - 1, 2) * 3; // chaining detected
     }
@@ -127,7 +146,7 @@ axis.stability = {
       tip += '<br></br> Ouch, use are using <code>@class=</code> statement, which will work only if you have exact set of classes and exact order in elements. If you ever add another class to an element this locator will fail. Please use "contains" function instead: <code>[contains(@class, "class-name")]</code>';
     }
 
-    tip += '<br></br> Please also make sure you are not relying on auto-generated class names like <code>jss*</code> or <code>ember-</code> or other class names which may be changed on a new build';
+    tip += '<br></br> Please also make sure you are not relying on auto-generated classes (from React/Angular/Ember) or Bootstrap classes which are used for styling (text-left, col, etc)';
 
 
     if (score > 30) return 'Your locator is fine but it may fail in a minor change of a page' + tip;
@@ -142,7 +161,10 @@ axis.uniqueness = {
   score: (locator) => {
     let score = 0;
     const uniqueElements = ['header','footer', 'article', 'section', 'form', 'nav', 'summary', 'aside', 'body'];
-    const attributes = ['data-', 'aria-', 'for=', 'name=', 'alt=', 'value=', 'src =', 'for =', 'name =', 'alt =', 'value =', 'src ='];
+    const attributes = ['data-', 'aria-', 
+      'id=', 'for=', 'name=', 'alt=', 'value=', 'src=', 'href=',
+      'id = ', 'src =', 'for =', 'name =', 'alt =', 'value =', 'src =', 'href ='
+    ];
 
     if (detectLocator(locator) === 'CSS') {
       if (locator.match(/#\w+$/)) return 100; // using ID only
