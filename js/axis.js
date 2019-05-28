@@ -114,7 +114,7 @@ axis.stability = {
       }
 
       for (let keyword of bootstrap) {
-        let matches = locator.indexOf(/@class\\s?,\\s?"${keyword}/g);
+        let matches = locator.match(/@class\\s?,\\s?"${keyword}/g);
         if (matches) score = score - matches.length * 20;
       }
 
