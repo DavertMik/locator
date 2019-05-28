@@ -182,8 +182,9 @@ axis.uniqueness = {
         if (locator.indexOf(keyword) >= 0) score += 100;
       }          
 
-      let numClasses = locator.split('.').length - 1; 
-      score += numClasses * 10;
+
+      let numClasses = locator.match(/\.[\w-]+/g)
+      if (numClasses) score += numClasses.length * 15;
     }
 
     if (detectLocator(locator) === 'XPath') {
