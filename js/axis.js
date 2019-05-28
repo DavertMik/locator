@@ -142,7 +142,7 @@ axis.uniqueness = {
   score: (locator) => {
     let score = 0;
     const uniqueElements = ['header','footer', 'article', 'section', 'form', 'nav', 'summary', 'aside', 'body'];
-    const attributes = ['data-', 'for', 'name', 'aria-', 'alt', 'value'];
+    const attributes = ['data-', 'aria-', 'for=', 'name=', 'alt=', 'value=', 'src =', 'for =', 'name =', 'alt =', 'value =', 'src ='];
 
     if (detectLocator(locator) === 'CSS') {
       if (locator.match(/#\w+$/)) return 100; // using ID only
