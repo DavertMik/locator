@@ -167,7 +167,7 @@ axis.uniqueness = {
     ];
 
     if (detectLocator(locator) === 'CSS') {
-      if (locator.match(/#\w+$/)) return 100; // using ID only
+      if (locator.match(/#[\w-_\s]+$/)) return 100; // using ID only
 
       let keywords = attributes.map(a => `[${a}`);
       for (let keyword of keywords) {
