@@ -28,7 +28,7 @@ We have predefined axis:
 * simplicty
 * uniqeness
 * length
-* frameworks usage
+* stability
 
 You can update their score calculation formulas or add axis of your own. 
 

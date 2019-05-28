@@ -218,7 +218,7 @@
     	let a = axis[key];
     	let score = a.score(locator);
     	scores.push(score);
-    	$(`#axis-${key}`).html(`<h5><strong>${key.toUpperCase()}</strong>: ${score}%</h5>` + a.analyze(score)).attr('class', detectClass(score));
+    	$(`#axis-${key}`).html(`<h5><strong>${key.toUpperCase()}</strong>: ${score}%</h5>` + a.analyze(score, locator)).attr('class', detectClass(score));
     });
 
     chart.updateSeries(scores);
